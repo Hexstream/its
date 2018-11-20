@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="canonical" href="https://www.hexstreamsoft.com/libraries/its/" />
+    <meta name="author" content="Jean-Philippe Paradis" />
+    <link rel="author" href="https://abc.hexstream.xyz/" />
+    <link rel="license" href="https://www.hexstreamsoft.com/UNLICENSE" />
+    <meta name="description" content="Provides convenient access to multiple values of an object in a concise, explicit and efficient way." />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>its | Libraries | HexstreamSoft</title>
+    <link href="https://www.hexstreamsoft.com/css/global.css" rel="stylesheet" type="text/css" />
+    <link href="https://www.hexstreamsoft.com/libraries/libraries.css" rel="stylesheet" type="text/css" />
+    <link href="https://global.hexstreamsoft.com/css/cl-definitions.css" rel="stylesheet" type="text/css" />
+    <script src="https://global.hexstreamsoft.com/scripts/global.js"></script>
+    <script src="https://www.hexstreamsoft.com/scripts/global.js"></script>
+    <script src="https://www.hexstreamsoft.com/libraries/libraries.js" defer></script>
+  </head>
+
+  <body>
+
+    <nav id="top-nav">
+
+      <div class="main">
+
+        <div class="breadcrumbs">
+          <a href="https://www.hexstreamsoft.com/">HexstreamSoft</a>
+          <span class="crumb"><span class="s"> » </span><a href="https://www.hexstreamsoft.com/libraries/">Libraries</a></span>
+          <span class="crumb"><span class="s"> » </span><a class="here">its</a></span>
+        </div>
+
+        <nav class="tabs" id="meta-nav">
+          <ul>
+            <li><a class="github" href="https://github.com/Hexstream/its"><span>See on GitHub</span></a></li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <p id="last-updated"><span>This page was last updated on </span><time datetime="2018-11-20">20 november 2018</time><span>.</span></p>
+
+    </nav>
+
+    <main>
+
+      <header id="page-header">
+        <h1>its</h1>
+      </header>
+
+      <div class="tags contains-groups">
+        <div class="group prominent">
+          <span class="tag hv license">
+            <span class="h">License<span>:</span></span>
+            <span class="v">Public Domain</span>
+          </span>
+          <span class="s">, </span>
+          <span class="tag hv quicklisp">
+            <span class="h">Load it with Quicklisp<span>:</span></span>
+            <code class="v">(ql:quickload "its")</code>
+          </span>
+        </div>
+        <div class="group">
+          <span class="tag hv">
+            <span class="h">Library type<span>:</span></span>
+            <span class="v">Operator overlay macro</span>
+          </span>
+          <span class="s">, </span>
+          <span class="tag hv">
+            <span class="h">Project complexity<span>:</span></span>
+            <span class="v">Simple/Medium</span>
+          </span>
+        </div>
+      </div>
+
+      <nav class="tabs" id="further-info">
+        <ul>
+          <li><a href="https://www.hexstreamsoft.com/libraries/releases/latest-versions/#its">Latest release</a></li>
+          <li><a href="https://www.hexstreamsoft.com/libraries/dependencies/#its">Dependencies</a></li>
+        </ul>
+        <ul>
+          <li><a href="https://www.hexstreamsoft.com/libraries/external-pages-xref/#its">External library pages</a></li>
+        </ul>
+      </nav>
+
+      <section id="introduction">
+
+        <p><dfn><code class="relevant"><a href="#dictionary_its">its</a></code></dfn> provides convenient access to multiple values of an object in a concise, explicit and efficient way.</p>
+
+      </section>
+
+      <nav class="tabs">
+        <ul>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#dictionary">Dictionary</a></li>
+        </ul>
+      </nav>
+
+      <section id="examples">
+
+        <h1 class="breadcrumbs-bar">
+          <span class="section-relative-nav">
+            <a href="#examples" class="anchor">⚓</a>
+          </span>
+          <span class="breadcrumbs">
+            <a href="#">its</a>
+            <span class="crumb"><span class="s"> » </span><a class="here">Examples</a></span>
+          </span>
+        </h1>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_its">its</a></code> <code class="relevant marker">cons</code> (cons 'foo 'bar))
+==
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">cons</code> t) (cons 'foo 'bar))
+==
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">cons</code> :car :cdr) (cons 'foo 'bar))
+==
+(let ((<var>my-cons</var> (cons 'foo 'bar)))
+  (values (car <var>my-cons</var>) (cdr <var>my-cons</var>)))
+=&gt;
+foo, bar</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(let ((<var>fun</var> (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">cons</code> t))))
+  (multiple-value-call #'values
+    (funcall <var>fun</var> '(foo . bar))
+    (funcall <var>fun</var> '(foo2 . bar2))))
+==
+(let ((<var>fun</var> (lambda (<var>my-cons</var>)
+             (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">cons</code> t) <var>my-cons</var>))))
+  (multiple-value-call #'values
+    (funcall <var>fun</var> '(foo . bar))
+    (funcall <var>fun</var> '(foo2 . bar2))))
+==
+(multiple-value-call #'values
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> <code class="relevant marker">cons</code> '(foo . bar))
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">cons</code> :car :cdr) '(foo2 . bar2)))
+==
+(<code class="relevant"><a href="#dictionary_their">their</a></code> <code class="relevant marker">cons</code> '(foo . bar) '(foo2 . bar2))
+=&gt;
+foo, bar, foo2, bar2</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">hash-table</code> (<code class="relevant marker">gethash</code> 'foo) (<code class="relevant marker">gethash</code> 'bar) (<code class="relevant marker">gethash</code> 'baz 'no-baz))
+  (let ((<var>hash</var> (make-hash-table :test 'eq)))
+    (prog1 <var>hash</var>
+      (setf (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">hash-table</code> (<code class="relevant marker">gethash</code> 'foo) (<code class="relevant marker">gethash</code> 'bar)) <var>hash</var>)
+            (values 'my-foo 'my-bar)))))
+==
+(let ((<var>hash</var> (make-hash-table :test 'eq)))
+  (setf (gethash 'foo <var>hash</var>) 'my-foo
+        (gethash 'bar <var>hash</var>) 'my-bar)
+  (values (gethash 'foo <var>hash</var>)
+          (gethash 'bar <var>hash</var>)
+          (gethash 'baz <var>hash</var> 'no-baz)))
+=&gt;
+my-foo, my-bar, no-baz</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(defclass coords ()
+  ((x :initarg :x)
+   (y :initarg :y)
+   (z :initarg :z)))
+
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">t</code> (<code class="relevant marker">slot-value</code> 'x 'y)
+        (<code class="relevant marker">slot-exists-p</code> 'z)
+        (<code class="relevant marker">slot-boundp</code> 'z))
+  (make-instance 'coords :x 0 :y 1))
+==
+(let ((<var>coords</var> (make-instance 'coords :x 0 :y 1)))
+  (values (slot-value <var>coords</var> 'x)
+          (slot-value <var>coords</var> 'y)
+          (slot-exists-p <var>coords</var> 'z)
+          (slot-boundp <var>coords</var> 'z)))
+=&gt;
+0, 1, t, nil</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(defclass coords ()
+  ((x :initarg :x :accessor x)
+   (y :initarg :y :accessor y)
+   (z :initarg :z :accessor z)))
+
+(<a href="https://www.hexstreamsoft.com/libraries/definitions-systems/" target="_blank">defsys:</a><code class="relevant"><a href="#dictionary_define-its">define</a></code> (<code class="relevant marker"><a href="#dictionary_its">its</a></code> coords) (<var>coords</var>)
+  (:x () `(x ,<var>coords</var>))
+  (:y () `(y ,<var>coords</var>))
+  (:z () `(z ,<var>coords</var>))
+  (t (:x :y :z)))
+
+(let ((<var>my-coords</var> (make-instance 'coords :x 0 :y 1)))
+  (setf (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">coords</code> :z :x) <var>my-coords</var>)
+        (values 2 -1))
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> <code class="relevant marker">coords</code> <var>my-coords</var>))
+==
+(let ((<var>my-coords</var> (make-instance 'coords :x 0 :y 1)))
+  (setf (values (z <var>my-coords</var>) (x <var>my-coords</var>))
+        (values 2 -1))
+  (values (x <var>my-coords</var>) (y <var>my-coords</var>) (z <var>my-coords</var>)))
+=&gt;
+-1, 1, 2
+
+(let ((<var>my-coords</var> (make-instance 'coords :x 0 :y 4 :z 8)))
+  (multiple-value-call #'format nil <code class="string">"At (~A, ~A, ~A)."</code>
+                       (its coords <var>my-coords</var>)))
+=&gt;
+<code class="string">"At (0, 4, 8)."</code></code></pre>
+
+        </div>
+
+        <div class="scroll" id="examples_their-efficient-inefficient">
+
+          <pre class="example"><code class="common-lisp">(<code class="relevant"><a href="#dictionary_their">their</a></code> <code class="relevant marker">cons</code> '(foo) '(bar) '(baz quux))
+==
+(let ((<var>function</var> (<code class="relevant"><a href="#dictionary_their">their</a></code> <code class="relevant marker">cons</code> (3)))) <span class="comment">;efficient</span>
+  (funcall <var>function</var> '(foo) '(bar) '(baz quux)))
+==
+(let ((<var>function</var> (<code class="relevant"><a href="#dictionary_their">their</a></code> <code class="relevant marker">cons</code>))) <span class="comment">;inefficient</span>
+  (funcall <var>function</var> '(foo) '(bar) '(baz quux)))
+=&gt;
+foo, nil, bar, nil, baz, (quux)</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp">(let ((<var>cons1</var> (cons 'cons1-car 'cons1-cdr))
+      (<var>cons2</var> (cons 'cons2-car 'cons2-cdr)))
+  (setf (<code class="relevant"><a href="#dictionary_their">their</a></code> <code class="relevant marker">cons</code> <var>cons1</var> <var>cons2</var>)
+        (values 'cons1-new-car 'cons1-new-cdr
+                'cons2-new-car 'cons2-new-cdr))
+  (values <var>cons1</var> <var>cons2</var>))
+==
+(let ((<var>cons1</var> (cons 'cons1-car 'cons1-cdr))
+      (<var>cons2</var> (cons 'cons2-car 'cons2-cdr)))
+  (setf (values (car <var>cons1</var>) (cdr <var>cons1</var>)
+                (car <var>cons2</var>) (cdr <var>cons2</var>))
+        (values 'cons1-new-car 'cons1-new-cdr
+                'cons2-new-car 'cons2-new-cdr))
+  (values <var>cons1</var> <var>cons2</var>))
+=&gt;
+(cons1-new-car . cons1-new-cdr),
+(cons2-new-car . cons2-new-cdr)
+</code></pre>
+
+        </div>
+
+        <div class="scroll">
+
+          <pre class="example"><code class="common-lisp"><span class="comment">;;;Last "t" in object position is evaluated but ignored.</span>
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">values</code> <code class="relevant marker">:lisp-implementation</code> <code class="relevant marker">:machine</code>) t)
+==
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">values</code> (<code class="relevant marker">:lisp-implementation</code> t) (<code class="relevant marker">:machine</code> t)) t)
+==
+(<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">values</code> (<code class="relevant marker">:lisp-implementation</code> :type :version)
+             (<code class="relevant marker">:machine</code> :instance :type :version))
+  t)
+==
+(multiple-value-call #'values
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> <code class="relevant marker">:lisp-implementation</code> t)
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> <code class="relevant marker">:machine</code> t))
+==
+(multiple-value-call #'values
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">:lisp-implementation</code> t) t)
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">:machine</code> t) t))
+==
+(multiple-value-call #'values
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">:lisp-implementation</code> :type :version) t)
+  (<code class="relevant"><a href="#dictionary_its">its</a></code> (<code class="relevant marker">:machine</code> :instance :type :version) t))
+==
+(multiple-value-call #'values
+  (values (lisp-implementation-type)
+          (lisp-implementation-version))
+  (values (machine-instance)
+          (machine-type)
+          (machine-version)))
+=&gt; <span class="comment">;Results may vary. ;P</span>
+<code class="string">"SBCL"</code>, <code class="string">"1.4.13"</code>, <code class="string">"dynamorph"</code>, <code class="string">"X86-64"</code>,
+<code class="string">"Intel(R) Celeron(R) CPU  J1800  @ 2.41GHz"</code></code></pre>
+
+        </div>
+
+      </section>
+
+      <section id="dictionary">
+
+        <h1 class="breadcrumbs-bar">
+          <span class="section-relative-nav">
+            <a href="#dictionary" class="anchor">⚓</a>
+          </span>
+          <span class="breadcrumbs">
+            <a href="#">its</a>
+            <span class="crumb"><span class="s"> » </span><a class="here">Dictionary</a></span>
+          </span>
+        </h1>
+
+        <nav class="tabs">
+          <ul>
+            <li><a href="#dictionary_its"><span class="type">Package</span> <code>its</code></a></li>
+            <li><a href="#dictionary_its"><span class="type">Macro</span> <code>its</code></a></li>
+            <li><a href="#dictionary_their"><span class="type">Macro</span> <code>their</code></a></li>
+            <li><a href="#dictionary_define-its"><span class="type">Macro</span> <code>(define its)</code></a></li>
+          </ul>
+        </nav>
+
+        <section id="dictionary_its">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#dictionary_its" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#dictionary" class="ellipsis">...<sub>2</sub></a>
+              <span class="crumb"><span class="s"> » </span><a class="here">its</a></span>
+            </span>
+          </h1>
+
+          <article class="package definition">
+
+            <h1><span class="type">Package</span> <span class="name self">its</span></h1>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p>Simply import <code class="relevant"><a href="#dictionary_its">its</a></code> and <code class="relevant"><a href="#dictionary_their">their</a></code> for normal usage. Don't <code>(:use)</code>!</p>
+              <p>This package will be mostly designed for explicit qualification of symbols when it exports more symbols, such as <code>its:expand-specification</code>.</p>
+            </section>
+
+          </article>
+
+          <article class="macro definition">
+
+            <h1><span class="type">Macro</span> <span class="name self">its, (setf its)</span></h1>
+
+            <p class="args-and-retvals"><var>specification</var> &amp;optional <var>object</var></p>
+
+            <section class="arguments-and-values">
+              <h1>Arguments and Values</h1>
+              <ul>
+                <li><var>specification</var> -- A cons or a symbol.</li>
+                <li><var>object</var> -- An object.</li>
+              </ul>
+            </section>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p><var>object</var> is required for <code>(setf its)</code>.</p>
+              <p>If <var>object</var> is provided, then <var>object</var> is evaluated first, then <var>specification</var> is evaluated from left to right.</p>
+              <p>If <var>object</var> is not provided, then a function equivalent to <code>(lambda (<var>object</var>) (its <var>specification</var> <var>object</var>))</code> is returned.</p>
+              <p>For now, see the <a href="#examples">examples</a> for inspiration.</p>
+            </section>
+
+          </article>
+
+        </section>
+
+        <section id="dictionary_their">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#dictionary_their" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#dictionary" class="ellipsis">...<sub>2</sub></a>
+              <span class="crumb"><span class="s"> » </span><a class="here">their</a></span>
+            </span>
+          </h1>
+
+          <article class="macro definition">
+
+            <h1><span class="type">Macro</span> <span class="name self">their, (setf their)</span></h1>
+
+            <p class="args-and-retvals"><var>specification</var> &amp;body <var>objects</var></p>
+
+            <section class="arguments-and-values">
+              <h1>Arguments and Values</h1>
+              <ul>
+                <li><var>specification</var> -- A cons or a symbol.</li>
+                <li><var>objects</var> -- A list.</li>
+              </ul>
+            </section>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p>There must be at least one <var>object</var> for <code>(setf their)</code>.</p>
+              <p><code class="relevant"><a href="#dictionary_their">their</a></code> with one <var>object</var> is exactly equivalent to <code class="relevant"><a href="#dictionary_its">its</a></code> with the same arguments.</p>
+              <p>If at least one <var>object</var> is provided, then <var>objects</var> are evaluated first from left to right, then <var>specification</var> is evaluated from left to right.</p>
+              <p>If no <var>objects</var> are provided, then a function accepting any number of <var>object</var> arguments is returned. This function returns the concatenation of the results of applying the <var>specification</var> to each of the <var>objects</var> in turn. To avoid expensive runtime concatenation of multiple values, one can (and normally should) provide the number of expected arguments. The function will then accept exactly that many objects. See the relevant <a href="#examples_their-efficient-inefficient">example</a>.</p>
+            </section>
+
+          </article>
+
+        </section>
+
+        <section id="dictionary_define-its">
+
+          <h1 class="breadcrumbs-bar">
+            <span class="section-relative-nav">
+              <a href="#dictionary_define-its" class="anchor">⚓</a>
+            </span>
+            <span class="breadcrumbs">
+              <a href="#dictionary" class="ellipsis">...<sub>2</sub></a>
+              <span class="crumb"><span class="s"> » </span><a class="here">(define its)</a></span>
+            </span>
+          </h1>
+
+          <article class="macro definition">
+
+            <h1><span class="type">Macro</span> <span class="name self">(<a href="https://www.hexstreamsoft.com/libraries/definitions-systems/#dictionary_define" target="_blank">defsys:define</a> (its <var>kind-name</var>))</span></h1>
+
+            <p class="args-and-retvals">(&amp;optional <var>object-var</var>) &body <var>clauses</var> =&gt; <var>kind</var></p>
+
+            <section class="arguments-and-values">
+              <h1>Arguments and Values</h1>
+              <ul>
+                <li><var>kind-name</var> -- A symbol.</li>
+                <li><var>object-var</var> -- A symbol.</li>
+                <li><var>clauses</var> -- A list.</li>
+                <li><var>kind</var> -- A kind definition object.</li>
+              </ul>
+            </section>
+
+            <section class="description">
+              <h1>Description</h1>
+              <p>Each <var>clause</var> defines an access specifier for the <var>kind</var> named <var>kind-name</var>, which is created if necessary.</p>
+              <p>Each <var>clause</var> is of the form <code>(<var>name</var> <var>lambda-list</var> <var>form</var>)</code> or <code>(t (&amp;rest <var>access-specifiers</var>))</code>.</p>
+              <p>For now, look in <a href="https://github.com/Hexstream/its/blob/master/definitions.lisp" target="_blank">definitions.lisp</a> for inspiration.</p>
+            </section>
+
+          </article>
+
+        </section>
+
+      </section>
+
+    </main>
+
+    <footer id="footer">
+      <div class="back-to-top left">
+        <a href="#">⬆</a>
+      </div>
+      <div class="main">
+        <a href="https://validator.w3.org/check?uri=http%3A%2F%2Fwww.hexstreamsoft.com%2Flibraries%2Fits%2F">✔ HTML5</a>
+        <a href="https://www.hexstreamsoft.com/README">✔ Public Domain</a>
+        <a href="https://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fwww.hexstreamsoft.com%2Flibraries%2Fits%2F">✔ CSS3</a>
+        <a>✔ Mobile-friendly</a>
+      </div>
+      <div class="back-to-top right">
+        <a href="#">⬆</a>
+      </div>
+    </footer>
+
+  </body>
+</html>
