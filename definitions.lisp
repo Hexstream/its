@@ -53,7 +53,7 @@
     (:expander (values (lambda (array)
                          `(array-displacement ,array))
                        2)))
-  (:displaced-to () `(array-displacement ,array))
+  (:displaced-to () `(identity (array-displacement ,array)))
   (:displaced-index-offset () `(nth-value 1 (array-displacement ,array)))
   (:element-type () `(array-element-type ,array))
   (:fill-pointer-p () `(array-has-fill-pointer-p ,array))
