@@ -13,6 +13,7 @@
   :serial cl:t
   :components ((:file "package")
                (:file "defsys")
+               (:file "main")
                (:file "definitions"))
 
   :in-order-to ((asdf:test-op (asdf:test-op #:its_tests))))
