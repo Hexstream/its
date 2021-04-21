@@ -28,13 +28,14 @@
   (:rehash-size () `(hash-table-rehash-size ,hash-table))
   (:rehash-threshold () `(hash-table-rehash-threshold ,hash-table))
   (gethash (key &optional default return-present-p)
-     (:expander (check-type return-present-p boolean)
-                (if return-present-p
-                    (values (lambda (hash-table)
-                              `(gethash ,key ,hash-table ,default))
-                            2)
-                    (lambda (hash-table)
-                      `(values (gethash ,key ,hash-table ,default))))))
+    (:expander
+      (check-type return-present-p boolean)
+      (if return-present-p
+          (values (lambda (hash-table)
+                    `(gethash ,key ,hash-table ,default))
+                  2)
+          (lambda (hash-table)
+            `(values (gethash ,key ,hash-table ,default))))))
   ;; (setf gethash)
   (remhash (key) `(remhash ,key ,hash-table)))
 
